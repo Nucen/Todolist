@@ -1,26 +1,38 @@
-const Todolist = () => {
+export type Task = {
+    id: number,
+    title: string,
+    isDone: boolean,
+}
+
+type PropseType = {
+    title: string,
+    tasks: Array<Task> // or Task[]
+}
+
+export const Todolist = (props: PropseType) => {
     return (
         <div className="">
-            <h3>What to learn?</h3>
+            <h3>{ props.title }</h3>
             <div>
                 <input />
                 <button>+</button>
                 <ul>
                     <li>
-                        <input type="checkbox" checked={true} />
+                        <input type="checkbox" checked={props.tasks[0].isDone} />
                         <p>
-                            HTML&CSS
+                            {props.tasks[0].title}
                         </p>
                     </li>
                     <li>
-                        <input type="checkbox" checked={true} />
+                        <input type="checkbox" checked={props.tasks[1].isDone} />
                         <p>
-                            JavaScript
+                            {props.tasks[1].title}
                         </p>
-                    </li><li>
-                        <input type="checkbox" checked={true} />
+                    </li>
+                    <li>
+                        <input type="checkbox" checked={props.tasks[2].isDone} />
                         <p>
-                            React
+                            {props.tasks[2].title}
                         </p>
                     </li>
                 </ul>
@@ -28,5 +40,3 @@ const Todolist = () => {
         </div>
     );
 }
-
-export default Todolist
