@@ -1,24 +1,29 @@
 import { useState } from "react";
 import "./index.css"
-import { Task, Todolist } from "./Pages/Todolist";
+import { Todolist } from "./Pages/Todolist";
+import { v1 } from "uuid";
 
 export type FilterValuesTypes = "all" | "completed" | "active"
 
 function App() {
 
-  let WhatToLehrntTasks: Task[] = [
-    { id: 1, title: "HTML&CSS", isDone: true },
-    { id: 2, title: "JS", isDone: true },
-    { id: 3, title: "TS", isDone: false },
-    { id: 4, title: "React", isDone: false }
-  ]
-
-  let [task, setTask] = useState(WhatToLehrntTasks)
+  let [task, setTask] = useState([
+    { id: v1(), title: "HTML&CSS", isDone: true },
+    { id: v1(), title: "JS", isDone: true },
+    { id: v1(), title: "TS", isDone: false },
+    { id: v1(), title: "React", isDone: false }
+  ])
   let [filter , setFilter] = useState<FilterValuesTypes>("completed")
 
-  const removeTask = (id: number) => {
+  const removeTask = (id: string) => {
     let FilteredTask = task.filter(t => t.id !== id)
     setTask(FilteredTask)
+  }
+
+  const addTask = (newTitle: string) => {
+    let newTask = { id: v1(), title: newTitle, isDone: false };
+    let newTasks = [newTask, ...task];
+    setTask(newTasks)
   }
 
   const changeFilter = (value: FilterValuesTypes) => {
@@ -34,7 +39,7 @@ function App() {
 
   return (
     <div className="w-full h-screen content-center">
-      <Todolist title="What to learn?" tasks={ tasksForToDoList } removeTask={removeTask} changeFilter={changeFilter} />
+      <Todolist title="What to learn?" tasks={tasksForToDoList} removeTask={removeTask} changeFilter={changeFilter} addTask={addTask} />
     </div>
   );
 }
