@@ -13,6 +13,7 @@ type PropseType = {
     removeTask: (id: string) => void,
     changeFilter: (value: FilterValuesTypes) => void,
     addTask: (title: string) => void,
+    changeTaskStatus: (taskId: string, isDone: boolean) => void,
 }
 
 export const Todolist = (props: PropseType) => {
@@ -30,8 +31,10 @@ export const Todolist = (props: PropseType) => {
     }};
 
     const addTask = () => {
-        props.addTask(newTaskTitle);
-        setNewTaskTitle("")
+        if (newTaskTitle.trim() !== "") {
+            props.addTask(newTaskTitle);
+            setNewTaskTitle("")
+        }
     }
 
     const onAllClickHanler = () => {
@@ -67,9 +70,13 @@ export const Todolist = (props: PropseType) => {
                             const onClick = () => {
                                 props.removeTask(t.id)
                             }
+
+                            const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+                                props.changeTaskStatus(t.id, e.currentTarget.checked)
+                            }
                             
                             return <li className="flex flex-row gap-3">
-                                <input type="checkbox" checked={t.isDone} />
+                                <input onChange={onChangeHandler} type="checkbox" checked={t.isDone} />
                                 <p className="w-28 text-xl">{t.title}</p>
                                 <button onClick={onClick}>X</button>
                             </li>
