@@ -19,21 +19,26 @@ type PropseType = {
 export const Todolist = (props: PropseType) => {
 
     const [newTaskTitle, setNewTaskTitle] = useState("");
+    const [error, setError] = useState<string | null>(null);
 
     const onNewTitleChangeHandeler = (e: ChangeEvent<HTMLInputElement>) => {
         setNewTaskTitle(e.currentTarget.value)
     }
 
     const onKeyPressHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-        props.addTask(newTaskTitle);
-        setNewTaskTitle("");
-    }};
+        setError(null);
+        if (e.key === "Enter") {
+            props.addTask(newTaskTitle);
+            setNewTaskTitle("");
+        }
+    };
 
     const addTask = () => {
         if (newTaskTitle.trim() !== "") {
             props.addTask(newTaskTitle);
             setNewTaskTitle("")
+        } else {
+            setError("Title is required")
         }
     }
 
@@ -44,25 +49,27 @@ export const Todolist = (props: PropseType) => {
     const onCompletedClickHanler = () => {
         props.changeFilter("completed")
     }
-    
+
     const onActiveClickHanler = () => {
         props.changeFilter("active")
     }
 
     return (
         <div className="flex flex-col items-center bg-slate-500">
-            <h3 className="text-2xl">{ props.title }</h3>
+            <h3 className="text-2xl">{props.title}</h3>
             <div>
                 <input
                     value={newTaskTitle}
                     onChange={onNewTitleChangeHandeler}
                     onKeyPress={onKeyPressHandler}
+                    className={error ? "border-2 border-red-600" : ""}
                 />
                 <button
                     className="bg-cyan-600 border-cyan-800 border-2 px-2 text-lg"
                     onClick={addTask}>
                     +
                 </button>
+                {error && <div className="text-red-600">{error}</div>}
                 <ul>
                     {
                         props.tasks.map((t) => { 
